@@ -1,0 +1,54 @@
+{% extends "src/main.html" %}
+{% block content %}<br>
+<div class="alert alert-primary" role="alert">
+  <h3>Requested Profiles</h3>
+</div>
+{% if is_empty %}
+	<h3>No profiles requested</h3>
+{% else %}
+{% for i in qs %}
+<br>
+<div class="card">
+  <div class="card-body">
+  	<div class="container">
+  		<div class="row justify-content-between">
+  			<div class="col-2 ">
+  				<img src={{i.avatar.url}} class="rounded-circle z-depth-0" alt="avatar image" height="100">
+    		</div>
+
+    		<div class="col-9">
+	    		<h5>{{i.user.username}}</h5>
+	    		<p>{{i.bio}}</p>
+	    		<div class="row justify-content-start">
+		    		<div class="col-2">	
+	    				<a class="btn btn-primary btn-sm" href="{% url 'detail_profile' i.slug  %}">See Profile</a>
+	   				</div>
+
+	   				<div class="col-3"> 
+	   					<form method="POST" action="{% url 'accept_request' %}">
+				    			{%  csrf_token %}
+				    			<input type="hidden" name="profile_pk" value={{i.id}}>
+				    			<button type="submit" class="btn btn-outline-success btn-sm">Accept invitation</button> 
+				    	</form>
+				    </div>
+				    <div class="col">
+				    	<form method="POST" action="{% url 'reject_request' %}">
+				    			{%  csrf_token %}
+				    			<input type="hidden" name="profile_pk" value={{i.id}}>
+				    			<button type="submit" class="btn btn-outline-danger btn-sm">Reject invitation</button> 
+				    	</form>
+
+	   				</div>
+	   			</div>	
+       		</div>
+    		
+
+  	
+  		</div>
+	</div>
+ 
+ </div>
+</div>
+{% endfor %}
+{% endif %}
+{% endblock %}

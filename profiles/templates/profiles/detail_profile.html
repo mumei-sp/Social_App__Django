@@ -1,0 +1,78 @@
+{% extends "src/main.html" %}
+
+{% block title %}
+{{object.user.username}}
+{% endblock %}
+
+{% block content %}
+<br>
+<div class="jumbotron jumbotron-fluid">
+<div class="container">
+	<div class="row">
+		<div class="col-4">
+			<h4> Profile: {{object.user.username}}</h4>
+    		<div class="row justify-content-md-center">
+    			<div class="col offset-md-2">
+    				<img src={{object.avatar.url}} class="rounded-circle" alt="avatar image" height="200">
+    			</div>
+    		</div>
+    		<br>
+    		<hr>
+    		<div class="row">
+    			<div class="col">
+    			<ul class="list-group">
+				  <li class="list-group-item d-flex justify-content-between align-items-center">
+				    No of Posts:&nbsp
+				    <span class="badge badge-primary badge-pill">{{object.no_of_posts}}</span>
+				  </li>
+				  <li class="list-group-item d-flex justify-content-between align-items-center">
+				    Likes received:&nbsp
+				    <span class="badge badge-primary badge-pill">{{object.likes_received}}</span>
+				  </li>
+				  <li class="list-group-item d-flex justify-content-between align-items-center">
+				    No of Friends:&nbsp
+				    <span class="badge badge-primary badge-pill">{{object.get_frnds.count}}</span>
+				  </li>
+				</ul>
+				</div>
+    		</div>
+    		<br>
+    		<div class="ml-5">
+    		{% if i.user not in rel_receiver and i.user not in rel_sender %}
+				<form method="POST" action="{% url 'send_invitation' %}">
+				    {%  csrf_token %}
+					<input type="hidden" name="profile_pk" value={{i.id}}>
+				  	<button type="submit" class="btn btn-outline-success btn-sm">Add to friends</button> 
+		  		</form>
+    		{% endif %}
+			{% if i.user in rel_receiver or i.user in rel_sender and request.user not in i.friends.all %}
+				<button type="submit" class="btn btn-outline-secondary  btn-sm" disabled>Waiting for responce</button>
+			{% endif %}
+			{% if request.user in i.friends.all %}
+				<form method="POST" action="{% url 'remove_friends' %}">
+					{%  csrf_token %}
+					<input type="hidden" name="profile_pk" value={{i.id}}>
+					<button type="submit" class="btn btn-outline-danger btn-sm">Remove from friends</button> 
+	    		</form>
+			{% endif %}		
+			</div>
+    	</div>
+    		<div class="col-1">
+    		</div>
+
+    	<div class="col-6">
+      		{% for i in object.post_set.all %}
+      		<div class="card border-primary p-2">
+					<div class="row ml-2 mr-2">
+						<div class="col">
+							{{ i.author.user }} -<small> {{ i.created|timesince }} ago </small>
+						</div>	
+					</div><hr>
+					{{i.content}}
+			</div><br>	
+			{% endfor %}
+    	</div>
+	</div>
+</div>
+</div>
+{% endblock %}

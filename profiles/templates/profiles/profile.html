@@ -1,0 +1,104 @@
+{% extends "src/main.html" %}
+
+{% block title %}
+MyProfile
+{% endblock %}
+
+{% block content %}
+ 
+<!--Modal: Update profile-->
+<div class="modal fade" id="update_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog cascading-modal modal-avatar modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+      	<div class="container">
+      		<div class="col-md-5 mx-auto">
+        	<img src="{{profile.avatar.url}}" alt="avatar" class="img-fluid img-thumbnail mx-auto">
+      		</div>
+  		</div>
+      </div>
+      <!--Body-->
+      <div class="modal-body mb-1 mr-0">
+        <h4 class="mt-1 mb-2">Update your Profile</h4>
+        <div class="dropdown-divider"></div>
+		<form action="" method="POST" enctype="multipart/form-data">
+			<div class="form-group">
+				{% csrf_token %}
+				{{form.as_p}}
+			</div>
+	        <div class="text-center mt-4">
+	          <button type="submit" class="btn btn-primary mt-1">Update</button>
+	        </div>
+        </form>
+      </div>
+    </div>
+    </div>
+</div>
+<!--Modal: Update Profile -->
+
+
+<div class="container">
+  <div class="card">
+    <div class="card-body">
+      <div class="row justify-content-between">
+        <div class="col-4">
+          <img src="{{profile.avatar.url}}" class="rounded mx-auto d-block img-fluid" alt="Profile"><br>
+          <div class="text-center">
+          	<a href="" class="btn btn-outline-primary btn-rounded" data-toggle="modal" data-target="#update_modal">Update Profile</a>
+          </div>
+        </div>
+        <div class="col-7">
+          <table class="table table-striped">
+            <tr>
+              <td>Username:</td>
+              <td>{{profile.user}}</td>
+            </tr>
+            <tr>
+              <td>Name:</td>
+              <td>{{profile.first_name}}&nbsp{{profile.last_name}}</td>
+            </tr>
+            <tr>
+              <td>Email:</td>
+              <td>{{profile.email}}</td>
+            </tr>
+            <tr>
+              <td>Bio:</td>
+              <td>{{profile.bio}}</td>
+            </tr>
+            <tr>
+              <td>Posts:</td>
+              <td>{{profile.no_of_posts}}</td>
+            </tr>
+            <tr>
+              <td>Likes received:</td>
+              <td>{{profile.likes_received}}</td>
+            </tr>
+            <tr>
+              <td>No of Friends:</td>
+              <td>{{profile.get_frnds.count }}</td>
+            </tr>
+
+            <tr>
+              <td>Friends:</td>
+              <td>
+                {% if frnds_exists %}
+                <ul>
+                  {% for f in profile.get_frnds %}
+                    <li>{{f}}</li>
+                  {% endfor %}
+                </ul>
+                {% else %}
+                  <p>No friends..</p>
+                {% endif %}
+              </td>
+            </tr>
+
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

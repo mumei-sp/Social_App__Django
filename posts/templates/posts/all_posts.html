@@ -1,0 +1,100 @@
+{% extends "src/main.html" %}
+{% block title %}
+All_Posts
+{% endblock %}
+
+{% block content %}
+<br>
+<div class="jumbotron jumbotron-fluid">
+	<div class="container">
+		<div class="row justify-content-between">
+			<div class="col-8">
+				{% for i in qs %}
+				<div class="card border-primary p-2">
+					<div class="row ml-2 mr-2">
+						<div class="col">
+							{{ i.author.user }} -<small> {{ i.created|timesince }} ago </small></div>
+						{% if i.author == profile %}
+						<div class="col-3">
+							<a href="{% url 'update_post' i.id %}"><button class="btn btn-outline-warning btn-sm">Update</button></a>
+                            <a href="{% url 'delete_post' i.id %}"><button class="btn btn-outline-danger btn-sm">Delete</button></a>
+						</div>
+						{% endif %}
+					</div>
+<hr>
+				<div class="card-body-fluid py-2 px-2">
+	    			{{i.content}}
+				</div> 
+<hr>			
+				<div class="row justify-content-between">
+				  	<div class="col">
+				  		{% if i.comment_set.all %}
+				    			<button class="btn btn-outline-primary btn-sm" type="button" data-toggle="collapse" data-target="#comments{{i.id}}">[Show/Hide]-Comments</button>
+				   			<div class="collapse" id="comments{{i.id}}">
+								<div class="card card-body">
+									{% for c in i.comment_set.all %}
+										<p>{{c.body}}</p>
+									{% endfor %}
+								</div>
+							</div>
+			  			{% endif %}
+					</div>
+					<div class="col-3">
+				    	<form action="{% url 'liked' %}" method="POST">
+				    		{% csrf_token %}
+				    		<input type="hidden" name="post_id" value="{{i.id}}">
+				    		<button  type="submit" class="btn btn-primary btn-sm">
+								{% for j in i.like_set.all %}
+									{% if j.user == profile and j.value == "like" %}
+										UnLike &nbsp<i class="fa fa-thumbs-down"></i>
+									{% else %}
+										Like &nbsp<i class="fa fa-thumbs-up"></i>
+					    			{% endif %}
+					    			{% empty %}
+					    			Like &nbsp<i class="fa fa-thumbs-up"></i>
+					    		{% endfor %}
+				    		</button>
+				    		{{ i.likes }}
+						</form>
+					</div>
+				</div>	
+<br>
+				<form method="POST">
+					{% csrf_token %}
+					{{c_form.body}}
+					<input type="hidden" name="post_id" value="{{i.id}}">
+					&nbsp<input type="submit" class="btn btn-success btn-sm" name="comment">
+				</form>
+
+				</div>
+				<br>
+				{% endfor %}
+			</div>
+
+			<div class="col-3 mr-3">
+				<div class="row">
+					<div class="col-7 mx-auto">
+						<img src="{{profile.avatar.url}}" alt="avatar" class="img-fluid img-thumbnail">
+					</div>
+				</div>
+<br>
+				<div class="card text-white bg-primary d-flex mb-3">
+					<div class="card-header">Post</div>
+						<div class="card-body">
+							<form method="POST">
+								{% csrf_token %}
+								{{p_form.as_p}}
+								<input type="submit" class="btn btn-success btn-sm" name="post">
+							</form>
+						</div>
+				</div>		
+			</div>
+
+
+
+
+		</div>
+	</div>
+</div>
+
+{% endblock %}

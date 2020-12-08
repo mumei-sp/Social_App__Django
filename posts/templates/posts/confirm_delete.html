@@ -1,0 +1,33 @@
+{% extends "src/main.html" %}
+
+{% block title %}
+Delete post
+{% endblock %}
+
+{% block content %}
+<div class="container"><br>
+{% if messages %}
+<div class="alert alert-danger" role="alert">
+  {% for i in messages %}
+  	{{i}}
+  {% endfor %}
+</div>
+
+{% else %}
+
+<div class="card ml-5 mr-5">
+  <div class="card-header">
+    Confirm Delete
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">Confirm to delete the post? {{profile.user.username}}..</h5>
+    <form method="POST">
+    	{% csrf_token %}
+    	{{form}}
+    	<input type="submit" name="Delete">
+    </form>
+  </div>
+</div>
+{% endif %}
+</div>
+{% endblock %}

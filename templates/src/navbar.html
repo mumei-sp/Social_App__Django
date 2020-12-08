@@ -1,0 +1,27 @@
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
+  <a class="navbar-brand ml-2" href="#">Friends Book</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="{% url 'posts' %}">Posts<span class="sr-only">(current)</span></a>
+      </li>
+    </ul>
+
+    <div class="dropdown dropleft mr-5">
+      <button class="btn btn-success dropdown-toggle dropdown-toggle-split" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Friends
+      </button>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <a class="dropdown-item" href="{% url 'all_profiles' %}">All Profiles</a>
+        <a class="dropdown-item" href="{% url 'to_invite' %}">Send Invites</a>
+            <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="{% url 'received_invites' %}">Received Invites</a>
+      </div>
+    </div>
+      <a href="{% url 'profile' %}"><h5>{{request.user}}</h5></a>
+  </div>
+</nav>
