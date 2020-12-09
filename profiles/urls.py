@@ -2,10 +2,14 @@ from django.urls import path
 from .views import (profile_view, Profiles_ListView, 
 				invite_profiles_ListView, received_invites, 
 				send_invitation, remove_friends, reject_request, 
-				accept_request, Profile_DetailView, )
+				accept_request, Profile_DetailView, registerPage,
+				loginPage, logoutUser,)
 
 urlpatterns=[
-			path("",profile_view,name="profile"),
+			path("",loginPage,name="login"),
+			path("register/",registerPage,name="register"),
+			path("logout/",logoutUser,name="logout"),
+			path("my_profile",profile_view,name="profile"),
 			path("all_profiles/",Profiles_ListView.as_view(),name="all_profiles"),
 			path("to_invite/",invite_profiles_ListView,name="to_invite"),
 			path("received_invites/",received_invites,name="received_invites"),

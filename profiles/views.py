@@ -1,11 +1,48 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from .models import Profile,Relationship
-from .forms import ProfileUpdateForm
+from .forms import ProfileUpdateForm, CreateUserForm
 from django.views.generic import ListView, DetailView
 from django.contrib.auth.models import User
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
+
+def registerPage(request):
+	if request.user.is_authenticated:
+		return redirect('posts')
+	else:
+		form = CreateUserForm()
+		if request.method == 'POST':
+			form = CreateUserForm(request.POST)
+			if form.is_valid():
+				form.save()
+				user = form.cleaned_data.get('username')
+				messages.success(request, 'Account was created for ' + user)
+				return redirect('login')
+		context = {'form':form}
+		return render(request, 'profiles/register.html', context)
+
+def loginPage(request):
+	if request.user.is_authenticated:
+		return redirect('posts')
+	else:
+		if request.method == 'POST':
+			username = request.POST.get('username')
+			password =request.POST.get('password')
+			user = authenticate(request, username=username, password=password)
+			if user is not None:
+				login(request, user)
+				return redirect('posts')
+			else:
+				messages.info(request, 'Username OR password is incorrect')
+		context = {}
+		return render(request, 'profiles/login.html', context)
+
+def logoutUser(request):
+	logout(request)
+	return redirect('login')
 
 @login_required
 def profile_view(request):

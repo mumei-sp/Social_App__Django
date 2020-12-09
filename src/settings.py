@@ -1,5 +1,8 @@
 from pathlib import Path
 import os
+import django_heroku
+import dj_database_url
+from decouple import config
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -18,10 +21,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     "profiles",
     "posts",
+    'crispy_forms',
 ]
 
-
-LOGIN_URL = '/admin/'
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+LOGIN_URL = '/profile/'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -31,6 +35,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 
 ROOT_URLCONF = 'src.urls'
@@ -102,7 +107,10 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static_project'),
     ]
-STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static_cdn", "static_root")
+STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "src/static_project", "static_root")
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static_cdn", "media_root")
+MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "src/static_project", "media_root")
+
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+django_heroku.settings(locals())
