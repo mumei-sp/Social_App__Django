@@ -4,11 +4,11 @@ from .models import Post,Comment
 class PostCreateUpdateForm(forms.ModelForm):
 	class Meta:
 		model=Post
-		fields=["content","image"]
+		fields=["content",]#"image"]
 
 		widgets={
 			"content": forms.Textarea(attrs={'class': "form-control","rows":"3","placeholder":"Add ur post.."}), 
-			"image": forms.FileInput(attrs={'class': "custom-file"}),
+			#"image": forms.FileInput(attrs={'class': "custom-file"}),
 			}
 
 class CommentForm(forms.ModelForm):

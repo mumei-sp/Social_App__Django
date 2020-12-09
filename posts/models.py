@@ -1,11 +1,11 @@
 from django.db import models
 from profiles.models import Profile
-from django.core.validators import FileExtensionValidator
+#from django.core.validators import FileExtensionValidator
 
 class Post(models.Model):
 	author=models.ForeignKey(Profile,on_delete=models.CASCADE)
 	content=models.TextField(max_length=200)
-	image=models.ImageField(upload_to='posts', validators=[FileExtensionValidator(['png', 'jpg', 'jpeg'])],blank=True)
+	#image=models.ImageField(upload_to='posts', validators=[FileExtensionValidator(['png', 'jpg', 'jpeg'])],blank=True)
 	updated = models.DateTimeField(auto_now=True)
 	created = models.DateTimeField(auto_now_add=True)
 	class Meta:

@@ -12,9 +12,11 @@
 		<div class="col-4">
 			<h4> Profile: {{object.user.username}}</h4>
     		<div class="row justify-content-md-center">
+    			<!--
     			<div class="col offset-md-2">
     				<img src={{object.avatar.url}} class="rounded-circle" alt="avatar image" height="200">
     			</div>
+    		-->
     		</div>
     		<br>
     		<hr>
@@ -38,20 +40,22 @@
     		</div>
     		<br>
     		<div class="ml-5">
-    		{% if i.user not in rel_receiver and i.user not in rel_sender %}
+    		{% if object.user not in rel_receiver and object.user not in rel_sender %}
 				<form method="POST" action="{% url 'send_invitation' %}">
 				    {%  csrf_token %}
-					<input type="hidden" name="profile_pk" value={{i.id}}>
+					<input type="hidden" name="profile_pk" value={{object.id}}>
 				  	<button type="submit" class="btn btn-outline-success btn-sm">Add to friends</button> 
 		  		</form>
     		{% endif %}
-			{% if i.user in rel_receiver or i.user in rel_sender and request.user not in i.friends.all %}
+			{% if object.user in rel_receiver or object.user in rel_sender %}
+				{% if request.user not in object.friends.all %}
 				<button type="submit" class="btn btn-outline-secondary  btn-sm" disabled>Waiting for responce</button>
+				{% endif %}
 			{% endif %}
-			{% if request.user in i.friends.all %}
+			{% if request.user in object.friends.all %}
 				<form method="POST" action="{% url 'remove_friends' %}">
 					{%  csrf_token %}
-					<input type="hidden" name="profile_pk" value={{i.id}}>
+					<input type="hidden" name="profile_pk" value={{object.id}}>
 					<button type="submit" class="btn btn-outline-danger btn-sm">Remove from friends</button> 
 	    		</form>
 			{% endif %}		
