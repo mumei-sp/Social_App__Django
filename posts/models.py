@@ -1,6 +1,6 @@
 from django.db import models
 from profiles.models import Profile
-#from django.core.validators import FileExtensionValidator
+from django.core.validators import FileExtensionValidator
 
 class Post(models.Model):
 	author=models.ForeignKey(Profile,on_delete=models.CASCADE)

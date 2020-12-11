@@ -43,11 +43,12 @@ All_Posts
 				    	<form action="{% url 'liked' %}" method="POST">
 				    		{% csrf_token %}
 				    		<input type="hidden" name="post_id" value="{{i.id}}">
-				    		<button  type="submit" class="btn btn-primary btn-sm">
+				    		<button  type="submit" class="btn btn-primary btn-sm" name="like">
 								{% for j in i.like_set.all %}
 									{% if j.user == profile and j.value == "like" %}
 										UnLike &nbsp<i class="fa fa-thumbs-down"></i>
-									{% else %}
+									{% endif %}
+									{% if j.user == profile and j.value == "unlike" %}
 										Like &nbsp<i class="fa fa-thumbs-up"></i>
 					    			{% endif %}
 					    			{% empty %}
@@ -73,11 +74,11 @@ All_Posts
 
 			<div class="col-3 mr-3">
 				<div class="row">
-					<!--
+					
 					<div class="col-7 mx-auto">
-						<img src="{{profile.avatar.url}}" alt="avatar" class="img-fluid img-thumbnail">
+				<!--		<img src="{{profile.avatar.url}}" alt="avatar" class="img-fluid img-thumbnail">  -->
 					</div>
-					-->
+					
 				</div>
 <br>
 				<div class="card text-white bg-primary d-flex mb-3">
